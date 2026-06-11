@@ -1,0 +1,14 @@
+package com.supportticket.enums;
+
+public enum AuditAction {
+    TICKET_CREATED,
+    STATUS_CHANGED,
+    PRIORITY_CHANGED,
+    CATEGORY_CHANGED,
+    ASSIGNED,
+    UNASSIGNED,
+    COMMENT_ADDED,
+    TICKET_RESOLVED,
+    TICKET_CLOSED,
+    AI_TRIAGE_COMPLETED
+}

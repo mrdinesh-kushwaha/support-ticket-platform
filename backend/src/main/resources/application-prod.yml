@@ -1,0 +1,48 @@
+# ================================================================
+# PROD PROFILE — Production Deployment
+# Uses PostgreSQL — configure via environment variables
+# Required env vars:
+#   DATABASE_URL      = jdbc:postgresql://host:5432/dbname
+#   DATABASE_USERNAME = your_db_user
+#   DATABASE_PASSWORD = your_db_password
+#   JWT_SECRET        = at-least-32-char-random-string
+#   ANTHROPIC_API_KEY = sk-ant-...
+#   CORS_ORIGINS      = https://your-frontend-domain.com
+# ================================================================
+spring:
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/supportticketdb}
+    driver-class-name: org.postgresql.Driver
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:postgres}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+server:
+  port: ${PORT:8080}
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/plain
+    min-response-size: 1024
+
+logging:
+  level:
+    com.supportticket: INFO
+    root: WARN
+
+app:
+  init:
+    sample-data: false

@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: support-ticket-platform
+  profiles:
+    active: dev
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  jackson:
+    time-zone: UTC
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:MyVeryLongSecretKeyForJWTThatIsAtLeast256BitsLong_PleaseChangeInProduction!}
+    expiration: 86400000
+  ai:
+    anthropic:
+      api-key: ${ANTHROPIC_API_KEY:}
+      model: claude-haiku-4-5-20251001
+      base-url: https://api.anthropic.com
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000}
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
