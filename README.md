@@ -1,114 +1,169 @@
-# SupportDesk — AI-Powered Support Ticket Platform
+<div align="center">
 
-A production-ready full-stack support ticket platform with AI-powered triage, built with **Java 21 + Spring Boot 3.2** (backend) and **React 18 + TypeScript** (frontend).
+# 🎫 SupportDesk — AI-Powered Support Ticket Platform
 
----
+**A production-grade, full-stack support ticket system with real-time AI triage, WebSocket notifications, and immutable audit trail.**
 
-## Features
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-2563EB?style=for-the-badge)](https://support-ticket-frontend-1n7g.onrender.com/)
+[![Backend](https://img.shields.io/badge/Backend-Spring_Boot_3.2-6DB33F?style=for-the-badge&logo=spring)](https://spring.io/projects/spring-boot)
+[![Frontend](https://img.shields.io/badge/Frontend-React_18_+_TypeScript-3178C6?style=for-the-badge&logo=react)](https://react.dev/)
+[![AI](https://img.shields.io/badge/AI-Anthropic_Claude-D97706?style=for-the-badge)](https://www.anthropic.com/)
+[![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
 
-| Feature | Details |
-|---|---|
-| 🔐 JWT Authentication | Register/login for customers and agents |
-| 🎫 Ticket Management | Create, view, filter, search, paginate tickets |
-| 🤖 AI Triage | Auto-categorize and prioritize via Anthropic Claude (rule-based fallback included) |
-| 💬 Comments | Threaded comments with role indicators |
-| 📋 Audit Trail | Full immutable history of all ticket changes |
-| 📊 Analytics | Ticket counts by status, priority, category |
-| 👥 Agent Tools | Assign tickets, update status, use AI suggested response |
-| 📱 Responsive UI | Mobile-friendly Tailwind CSS design |
+</div>
 
 ---
 
-## Tech Stack
+## 🌐 Live Demo
+
+> **Try it now → [https://support-ticket-frontend-1n7g.onrender.com/](https://support-ticket-frontend-1n7g.onrender.com/)**
+
+Use the pre-seeded accounts below — no signup needed:
+
+| Role | Email | Password |
+|---|---|---|
+| 🧑‍💼 **Agent** | `agent1@example.com` | `password123` |
+| 👤 **Customer** | `customer1@example.com` | `password123` |
+| 🧑‍💼 **Agent 2** | `agent2@example.com` | `password123` |
+| 👤 **Customer 2** | `customer2@example.com` | `password123` |
+
+> ⚠️ Hosted on Render free tier — first load may take ~30s to wake up.
+
+---
+
+## ✨ Features
+
+### 🤖 AI-Powered Triage
+Every new ticket is automatically **categorized** (Billing, Technical, Account Access, etc.) and **prioritized** (Low → Critical) by Anthropic Claude. A draft agent response is also suggested. Falls back gracefully to a rule-based keyword engine if the API is unavailable — so the system always works.
+
+### 🔔 Real-Time Notifications
+WebSocket (STOMP over SockJS) pushes instant in-app notifications to agents when tickets arrive and to customers when agents respond — no polling, no refresh needed.
+
+### 📋 Immutable Audit Trail
+Every ticket state change (status, priority, assignment, comment) is recorded in an append-only `audit_logs` table. Full history is visible on each ticket — useful for compliance, debugging, and dispute resolution.
+
+### 📊 Analytics Dashboard
+Agents see live ticket counts broken down by status, priority, and category. Built on a dedicated `GET /api/tickets/analytics` endpoint.
+
+### 🔐 Role-Based Access Control
+Three roles: **Customer** (creates & views own tickets), **Agent** (manages all tickets, assigns, resolves), **Admin**. Route guards enforced on both frontend (React) and backend (Spring Security).
+
+### 💬 Threaded Comments
+Customers and agents can communicate via threaded comments on each ticket. Comments on closed tickets are blocked by design.
+
+---
+
+## 🖥️ Tech Stack
 
 ### Backend
-- **Java 21** + **Spring Boot 3.2**
-- Spring Security + JWT (JJWT 0.12)
-- Spring Data JPA + Hibernate
-- **Dev DB**: H2 (in-memory, zero setup)
-- **Prod DB**: PostgreSQL 16
-- Flyway migrations (prod only)
-- Springdoc OpenAPI / Swagger UI
-- WebClient (Reactor) for AI HTTP calls
+| Technology | Purpose |
+|---|---|
+| Java 21 + Spring Boot 3.2 | Core framework, virtual threads |
+| Spring Security + JWT (JJWT 0.12) | Stateless authentication |
+| Spring Data JPA + Hibernate | ORM, repository pattern |
+| Spring WebSocket + STOMP | Real-time push notifications |
+| WebClient (Reactor) | Non-blocking Anthropic API calls |
+| PostgreSQL 16 (prod) / H2 (dev) | Database |
+| Flyway | Schema migrations (prod only) |
+| Springdoc OpenAPI | Swagger UI auto-documentation |
+| Docker + Docker Compose | Containerized deployment |
 
 ### Frontend
-- **React 18** + **TypeScript**
-- React Router v6
-- TanStack Query v5 (server state)
-- Zustand (auth state)
-- Axios (HTTP client)
-- Tailwind CSS v3
-- Vite
+| Technology | Purpose |
+|---|---|
+| React 18 + TypeScript | UI framework with type safety |
+| React Router v6 | Client-side SPA routing |
+| TanStack Query v5 | Server state, caching, background refetch |
+| Zustand | Auth/session state |
+| Axios + interceptors | HTTP client with JWT injection |
+| Tailwind CSS v3 | Utility-first styling |
+| Vite | Build tool, sub-second HMR |
+| SockJS + STOMP.js | WebSocket client |
 
 ---
 
-## Prerequisites
+## 🏗️ Architecture Overview
 
-- Java 21+
-- Maven 3.9+
-- Node.js 20+
-- npm 10+
-- Docker + Docker Compose *(optional, for full stack)*
+```
+Browser (React 18 + TypeScript)
+    │  REST + WebSocket (STOMP/SockJS)
+    ▼
+Spring Boot 3.2 (Java 21)
+  ├── JwtAuthenticationFilter  →  SecurityContextHolder
+  ├── Controllers              →  Services  →  Repositories
+  ├── AiTriageService          →  Anthropic API (with fallback)
+  └── NotificationService      →  WebSocket broker  →  Client push
+    │
+    ├── PostgreSQL 16  (tickets, users, comments, audit_logs, notifications)
+    └── Anthropic Claude API  (category + priority + draft response)
+```
+
+> 📄 **Full architecture details** → [`ARCHITECTURE.md`](ARCHITECTURE.md)
 
 ---
 
-## Local Development (Quickstart — No Docker Required)
+## 🚀 Quick Start (No Docker)
 
-### 1. Clone the repository
+### Prerequisites
+- Java 21+, Maven 3.9+
+- Node.js 20+, npm 10+
 
+### 1. Clone
 ```bash
 git clone https://github.com/your-username/support-ticket-platform.git
 cd support-ticket-platform
 ```
 
-### 2. Start the Backend (Dev profile — H2 in-memory DB)
-
+### 2. Start Backend
 ```bash
 cd backend
 mvn spring-boot:run
 ```
+Backend → `http://localhost:8080`
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- H2 Console: `http://localhost:8080/h2-console` (URL: `jdbc:h2:mem:supportdb`, user: `sa`, password: *(blank)*)
 
-The backend starts on **http://localhost:8080**
-
-- Swagger UI: http://localhost:8080/swagger-ui.html
-- H2 Console: http://localhost:8080/h2-console
-  - JDBC URL: `jdbc:h2:mem:supportdb`
-  - Username: `sa` | Password: *(blank)*
-
-**Sample users seeded automatically (password: `password123` for all):**
-
-| Email | Role |
-|---|---|
-| admin@example.com | Admin |
-| agent1@example.com | Agent |
-| agent2@example.com | Agent |
-| customer1@example.com | Customer |
-| customer2@example.com | Customer |
-
-### 3. Start the Frontend
-
+### 3. Start Frontend
 ```bash
 cd ../frontend
 npm install
 npm run dev
 ```
+Frontend → `http://localhost:5173`
 
-Frontend starts on **http://localhost:5173** (proxies `/api` → `http://localhost:8080`)
+> ✅ Sample users are **auto-seeded** in dev mode. Password for all: `password123`
 
 ---
 
-## Environment Variables
+## 🐳 Docker Compose (Full Stack)
+
+```bash
+# Optional: set your Anthropic API key
+export ANTHROPIC_API_KEY=sk-ant-...
+
+# Start everything (PostgreSQL + Backend + Frontend)
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+```
+
+App → `http://localhost`
+
+---
+
+## ⚙️ Environment Variables
 
 ### Backend
 
 | Variable | Default | Description |
 |---|---|---|
-| `SPRING_PROFILES_ACTIVE` | `dev` | Use `prod` for production |
-| `DATABASE_URL` | *(H2 in dev)* | `jdbc:postgresql://host:5432/dbname` |
+| `SPRING_PROFILES_ACTIVE` | `dev` | Set `prod` for PostgreSQL |
+| `DATABASE_URL` | H2 (dev) | `jdbc:postgresql://host:5432/dbname` |
 | `DATABASE_USERNAME` | `sa` | PostgreSQL username |
 | `DATABASE_PASSWORD` | *(blank)* | PostgreSQL password |
-| `JWT_SECRET` | *(insecure default)* | **Change in production!** Min 32 chars |
-| `ANTHROPIC_API_KEY` | *(blank)* | Optional. Falls back to rule-based triage |
+| `JWT_SECRET` | ⚠️ insecure default | **Change in prod!** Min 32 chars |
+| `ANTHROPIC_API_KEY` | *(blank)* | Optional — falls back to rule-based triage |
 | `CORS_ORIGINS` | `http://localhost:5173` | Comma-separated allowed origins |
 | `PORT` | `8080` | Server port |
 
@@ -118,176 +173,148 @@ Frontend starts on **http://localhost:5173** (proxies `/api` → `http://localho
 |---|---|---|
 | `VITE_API_URL` | `/api` | Backend API base URL |
 
-Create `frontend/.env.local` for local overrides:
-```env
-VITE_API_URL=http://localhost:8080/api
-```
+---
+
+## 📡 API Reference
+
+Swagger UI: **`http://localhost:8080/swagger-ui.html`**
+
+### Endpoints
+
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| `POST` | `/api/auth/register` | Public | Register (CUSTOMER or AGENT) |
+| `POST` | `/api/auth/login` | Public | Login → receive JWT |
+| `GET` | `/api/auth/me` | Any | Current user info |
+| `POST` | `/api/tickets` | Customer | Create ticket (AI triage runs automatically) |
+| `GET` | `/api/tickets` | Any | List tickets — filtered, paginated, searchable |
+| `GET` | `/api/tickets/:id` | Any | Ticket detail |
+| `PATCH` | `/api/tickets/:id` | Agent | Update status / priority / assignment |
+| `POST` | `/api/tickets/:id/comments` | Any | Add comment |
+| `GET` | `/api/tickets/:id/comments` | Any | Get paginated comments |
+| `GET` | `/api/tickets/:id/audit-logs` | Any | Full audit trail |
+| `GET` | `/api/tickets/analytics` | Agent | Stats by status, priority, category |
+| `GET` | `/api/users/agents` | Agent | Agent list (for assignment dropdown) |
+
+### Ticket Filters (`GET /api/tickets`)
+
+| Param | Type | Options |
+|---|---|---|
+| `search` | string | Free text (title + description) |
+| `status` | enum | `OPEN` `IN_PROGRESS` `RESOLVED` `CLOSED` |
+| `priority` | enum | `LOW` `MEDIUM` `HIGH` `CRITICAL` |
+| `category` | enum | `BILLING` `TECHNICAL_ISSUE` `ACCOUNT_ACCESS` `FEATURE_REQUEST` `GENERAL_INQUIRY` |
+| `assigneeId` | long | Filter by assigned agent |
+| `page` | int | 0-based |
+| `size` | int | Default 10, max 100 |
+| `sortBy` | string | Default `createdAt` |
+| `sortDir` | string | `asc` or `desc` |
 
 ---
 
-## Production Deployment
+## ☁️ Production Deployment
 
-### Option A — Docker Compose (Recommended)
-
-```bash
-# Set your API key (optional)
-export ANTHROPIC_API_KEY=sk-ant-...
-
-# Start all services (postgres + backend + frontend)
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-```
-
-App available at **http://localhost**
-
-### Option B — Deploy to Render / Railway / Fly.io
-
-#### Backend (Render Web Service)
+### Render / Railway / Fly.io (Backend)
 
 1. Connect GitHub repo
-2. **Build Command**: `cd backend && mvn clean package -DskipTests`
-3. **Start Command**: `java -jar backend/target/support-ticket-platform-1.0.0.jar`
-4. Set environment variables:
-   ```
-   SPRING_PROFILES_ACTIVE=prod
-   DATABASE_URL=jdbc:postgresql://...
-   DATABASE_USERNAME=...
-   DATABASE_PASSWORD=...
-   JWT_SECRET=<random-32+-char-string>
-   ANTHROPIC_API_KEY=sk-ant-...
-   CORS_ORIGINS=https://your-frontend-domain.com
-   ```
+2. **Build:** `cd backend && mvn clean package -DskipTests`
+3. **Start:** `java -jar backend/target/support-ticket-platform-1.0.0.jar`
+4. Set env vars:
+```
+SPRING_PROFILES_ACTIVE=prod
+DATABASE_URL=jdbc:postgresql://...
+DATABASE_USERNAME=...
+DATABASE_PASSWORD=...
+JWT_SECRET=<min-32-char-random-string>
+ANTHROPIC_API_KEY=sk-ant-...
+CORS_ORIGINS=https://your-frontend.vercel.app
+```
 
-#### Frontend (Vercel / Netlify)
+### Vercel / Netlify (Frontend)
 
-1. Connect GitHub repo, set **root directory** to `frontend`
-2. **Build Command**: `npm run build`
-3. **Output Directory**: `dist`
-4. Set environment variable:
-   ```
-   VITE_API_URL=https://your-backend-url.com/api
-   ```
+- Root: `frontend/`
+- Build: `npm run build`
+- Output: `dist`
+- Env: `VITE_API_URL=https://your-backend.onrender.com/api`
 
-#### PostgreSQL Setup (prod)
-
+### PostgreSQL (Production)
 ```sql
 CREATE DATABASE supportticketdb;
 CREATE USER supportuser WITH PASSWORD 'your-password';
 GRANT ALL PRIVILEGES ON DATABASE supportticketdb TO supportuser;
 ```
-
-Flyway will automatically run migrations on first boot.
-
----
-
-## API Documentation
-
-Swagger UI available at: **http://localhost:8080/swagger-ui.html**
-
-### Key Endpoints
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| POST | `/api/auth/register` | Public | Register customer or agent |
-| POST | `/api/auth/login` | Public | Login, receive JWT |
-| GET | `/api/auth/me` | Any | Get current user |
-| POST | `/api/tickets` | Customer | Create ticket (AI triage runs) |
-| GET | `/api/tickets` | Any | List tickets (filtered, paginated) |
-| GET | `/api/tickets/:id` | Any | Get ticket details |
-| PATCH | `/api/tickets/:id` | Agent | Update status/priority/category/assignment |
-| POST | `/api/tickets/:id/comments` | Any | Add comment |
-| GET | `/api/tickets/:id/comments` | Any | Get comments (paginated) |
-| GET | `/api/tickets/:id/audit-logs` | Any | Get audit trail |
-| GET | `/api/tickets/analytics` | Agent | Get analytics |
-| GET | `/api/users/agents` | Agent | List agents (for assignment) |
-
-### Query Parameters (GET /api/tickets)
-
-| Param | Type | Description |
-|---|---|---|
-| `search` | string | Search in title and description |
-| `status` | enum | `OPEN`, `IN_PROGRESS`, `RESOLVED`, `CLOSED` |
-| `priority` | enum | `LOW`, `MEDIUM`, `HIGH`, `CRITICAL` |
-| `category` | enum | `BILLING`, `TECHNICAL_ISSUE`, `ACCOUNT_ACCESS`, `FEATURE_REQUEST`, `GENERAL_INQUIRY` |
-| `assigneeId` | long | Filter by assigned agent ID |
-| `page` | int | Page number (0-based, default: 0) |
-| `size` | int | Page size (default: 10, max: 100) |
-| `sortBy` | string | Field to sort by (default: `createdAt`) |
-| `sortDir` | string | `asc` or `desc` (default: `desc`) |
+Flyway runs migrations automatically on first boot.
 
 ---
 
-## Running Tests
-
-```bash
-cd backend
-mvn test
-```
-
----
-
-## Assumptions Made
-
-1. **Single registration endpoint** — role is set at registration (CUSTOMER or AGENT). In production, agent accounts would typically be created by an admin.
-
-2. **AI triage is synchronous** — runs within the ticket creation request. A background queue (RabbitMQ/SQS) would be better at scale, but adds complexity.
-
-3. **No email notifications** — noted as a future improvement. Would use Spring Mail + async processing.
-
-4. **Customers can only see their own tickets** — agents/admins see all tickets.
-
-5. **Comments on closed tickets are blocked** — prevents activity on resolved issues. This could be configurable.
-
-6. **H2 in dev mode** — uses H2 compatible SQL. The `MODE=PostgreSQL` flag makes behavior close to production, but not identical.
-
-7. **JWT in localStorage** — simpler for a demo/assignment. For production, `httpOnly` cookies would reduce XSS risk.
-
----
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 support-ticket-platform/
-├── backend/                         # Spring Boot application
-│   ├── src/main/java/com/supportticket/
-│   │   ├── config/                  # Security, CORS, OpenAPI, DataSeeder
-│   │   ├── controller/              # REST controllers
-│   │   ├── dto/                     # Request/Response DTOs
-│   │   ├── entity/                  # JPA entities
-│   │   ├── enums/                   # Role, Status, Priority, Category
-│   │   ├── exception/               # Custom exceptions + GlobalExceptionHandler
-│   │   ├── repository/              # Spring Data repositories
-│   │   ├── security/                # JWT filter + UserDetailsService
-│   │   ├── service/                 # Business logic interfaces + implementations
-│   │   └── util/                    # Utility mappers
-│   └── src/main/resources/
-│       ├── application.yml          # Base config
-│       ├── application-dev.yml      # Dev profile (H2)
-│       ├── application-prod.yml     # Prod profile (PostgreSQL)
-│       └── db/migration/            # Flyway SQL migrations
 │
-├── frontend/                        # React application
-│   └── src/
-│       ├── api/                     # Axios API calls (auth, tickets, users)
-│       ├── components/              # Reusable UI components
-│       │   ├── common/              # Spinner, Badge, Pagination, EmptyState
-│       │   ├── layout/              # Navbar
-│       │   └── tickets/             # TicketCard, TicketFiltersBar
-│       ├── pages/                   # Route-level page components
-│       ├── store/                   # Zustand auth store
-│       ├── types/                   # TypeScript interfaces
-│       └── utils/                   # helpers, formatters, config maps
+├── backend/
+│   └── src/main/java/com/supportticket/
+│       ├── config/         # Security, WebSocket, CORS, DataSeeder
+│       ├── controller/     # REST + WebSocket controllers
+│       ├── dto/            # Request / Response DTOs
+│       ├── entity/         # JPA entities (Ticket, User, Comment, AuditLog)
+│       ├── enums/          # Role, TicketStatus, Priority, Category
+│       ├── exception/      # GlobalExceptionHandler + custom exceptions
+│       ├── repository/     # Spring Data JPA (with custom JPQL)
+│       ├── security/       # JwtFilter + JwtService + UserDetailsService
+│       ├── service/        # Interfaces + implementations
+│       └── util/           # Entity → DTO mappers
 │
-├── docker-compose.yml               # Full stack (postgres + backend + frontend)
-├── docker-compose.dev.yml           # Dev (postgres only)
-├── ARCHITECTURE.md                  # Architecture documentation
-└── README.md                        # This file
+├── frontend/src/
+│   ├── api/                # Axios calls (auth, tickets, users, notifications)
+│   ├── components/         # Reusable UI (common, layout, tickets)
+│   ├── hooks/              # useNotifications (WebSocket hook)
+│   ├── pages/              # LoginPage, CustomerDashboard, AgentDashboard,
+│   │                       # TicketDetailPage, CreateTicketPage
+│   ├── store/              # Zustand auth store
+│   ├── types/              # Shared TypeScript interfaces
+│   └── utils/              # helpers, formatters
+│
+├── docker-compose.yml      # Full stack: postgres + backend + frontend
+├── docker-compose.dev.yml  # Dev: postgres only
+├── ARCHITECTURE.md         # Deep-dive architecture & design decisions
+└── README.md               # This file
 ```
 
 ---
 
-## License
+## 🔮 What I'd Build Next
 
-MIT
+| Priority | Feature | Approach |
+|---|---|---|
+| 🔴 | Async AI triage (remove latency) | Spring `@Async` or RabbitMQ |
+| 🔴 | Refresh tokens + `httpOnly` cookies | Sliding expiry, secure cookie |
+| 🔴 | Email notifications | Spring Mail + async job |
+| 🟡 | Rate limiting on auth endpoints | `bucket4j` per-IP |
+| 🟡 | File attachments (screenshots/logs) | S3 / MinIO presigned URLs |
+| 🟡 | SLA auto-escalation | `@Scheduled` job + priority rules |
+| 🟡 | Unit + integration tests | MockMvc + Mockito + Testcontainers |
+| 🟢 | Full-text search | PostgreSQL `tsvector` / Elasticsearch |
+| 🟢 | Observability | OpenTelemetry + Prometheus + Grafana |
+
+---
+
+## 🧠 Design Decisions & Assumptions
+
+1. **Synchronous AI triage** — runs inline with ticket creation. Adds ~300–800ms latency but keeps the system simple. At scale, this moves to an async queue.
+2. **JWT in `localStorage`** — chosen for simplicity. Production hardening: `httpOnly` + `Secure` cookies (eliminates XSS token theft).
+3. **Single `users` table with `role` column** — all user types share identical fields; RBAC is a permission level, not a data model difference.
+4. **Audit log is append-only** — no UPDATE/DELETE on `audit_logs` to preserve tamper-evident history.
+5. **Rule-based triage fallback** — system is fully functional without an API key. Fallback regex patterns cover real support vocabulary.
+6. **Agent accounts created at registration** — in production, agents would be provisioned by an admin. Simplified for MVP.
+7. **Comments blocked on closed tickets** — prevents stale activity. Could be made configurable via an admin setting.
+
+---
+
+<div align="center">
+
+**Built with Java 21 · Spring Boot 3.2 · React 18 · Anthropic Claude**
+
+⭐ Star this repo if you found it useful!
+
+</div>
