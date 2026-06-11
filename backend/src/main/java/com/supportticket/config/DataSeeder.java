@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-@Profile("dev")
+@Profile({"dev", "prod"})
 @RequiredArgsConstructor
 @Slf4j
 public class DataSeeder implements CommandLineRunner {
@@ -47,10 +47,10 @@ public class DataSeeder implements CommandLineRunner {
 
         // Create users
         User admin = createUser("admin@example.com", "Admin User", Role.ADMIN);
-        User agent1 = createUser("agent1@example.com", "Alice Agent", Role.AGENT);
-        User agent2 = createUser("agent2@example.com", "Bob Agent", Role.AGENT);
-        User customer1 = createUser("customer1@example.com", "Charlie Customer", Role.CUSTOMER);
-        User customer2 = createUser("customer2@example.com", "Diana Customer", Role.CUSTOMER);
+        User agent1 = createUser("agent1@example.com", "Dinesh", Role.AGENT);
+        User agent2 = createUser("agent2@example.com", "Syra", Role.AGENT);
+        User customer1 = createUser("customer1@example.com", "Neha", Role.CUSTOMER);
+        User customer2 = createUser("customer2@example.com", "Ram", Role.CUSTOMER);
 
         log.info("Created 5 users. Credentials: password = 'password123' for all");
 

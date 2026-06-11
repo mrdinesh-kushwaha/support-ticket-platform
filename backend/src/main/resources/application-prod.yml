@@ -1,14 +1,3 @@
-# ================================================================
-# PROD PROFILE — Production Deployment
-# Uses PostgreSQL — configure via environment variables
-# Required env vars:
-#   DATABASE_URL      = jdbc:postgresql://host:5432/dbname
-#   DATABASE_USERNAME = your_db_user
-#   DATABASE_PASSWORD = your_db_password
-#   JWT_SECRET        = at-least-32-char-random-string
-#   ANTHROPIC_API_KEY = sk-ant-...
-#   CORS_ORIGINS      = https://your-frontend-domain.com
-# ================================================================
 spring:
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/supportticketdb}
@@ -45,4 +34,4 @@ logging:
 
 app:
   init:
-    sample-data: false
+    sample-data: true
