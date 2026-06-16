@@ -36,14 +36,13 @@ export default function NotificationBell() {
       </button>
 
       {open && (
-        <div
-          className="
-            absolute right-0 z-50 mt-3
-            w-[calc(100vw-32px)] max-w-[330px]
-            overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl
-            sm:w-[330px]
-          "
-        >
+       <div
+            className="
+              fixed left-4 right-4 top-20 z-50
+              max-h-[360px] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl
+              sm:absolute sm:left-auto sm:right-0 sm:top-auto sm:mt-3 sm:w-[330px]
+            "
+          >
           <div className="border-b border-slate-100 px-4 py-3">
             <p className="font-extrabold text-slate-950">Notifications</p>
             <p className="text-xs text-slate-500">Latest 3 ticket updates</p>
