@@ -10,6 +10,8 @@ export default function NotificationBell() {
   const { notifications, unreadCount } = useNotifications();
   const [open, setOpen] = useState(false);
 
+  const latestNotifications = notifications.slice(0, 3);
+
   const handleOpen = async () => {
     setOpen((prev) => !prev);
     if (!open && unreadCount > 0) {
@@ -34,19 +36,26 @@ export default function NotificationBell() {
       </button>
 
       {open && (
-        <div className="absolute right-0 z-50 mt-3 w-[330px] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl">
+        <div
+          className="
+            absolute right-0 z-50 mt-3
+            w-[calc(100vw-32px)] max-w-[330px]
+            overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl
+            sm:w-[330px]
+          "
+        >
           <div className="border-b border-slate-100 px-4 py-3">
             <p className="font-extrabold text-slate-950">Notifications</p>
-            <p className="text-xs text-slate-500">Latest ticket updates</p>
+            <p className="text-xs text-slate-500">Latest 3 ticket updates</p>
           </div>
 
-          <div className="max-h-[360px] overflow-y-auto">
-            {notifications.length === 0 ? (
+          <div className="max-h-[280px] overflow-y-auto">
+            {latestNotifications.length === 0 ? (
               <div className="px-4 py-8 text-center text-sm text-slate-500">
                 No notifications yet
               </div>
             ) : (
-              notifications.map((n) => (
+              latestNotifications.map((n) => (
                 <button
                   key={n.id}
                   type="button"
@@ -56,10 +65,10 @@ export default function NotificationBell() {
                   }}
                   className="block w-full border-b border-slate-100 px-4 py-3 text-left hover:bg-slate-50"
                 >
-                  <p className="text-sm font-extrabold text-slate-950">
+                  <p className="truncate text-sm font-extrabold text-slate-950">
                     {n.title}
                   </p>
-                  <p className="mt-1 line-clamp-2 text-xs text-slate-500">
+                  <p className="mt-1 line-clamp-2 break-words text-xs leading-5 text-slate-500">
                     {n.message}
                   </p>
                 </button>
