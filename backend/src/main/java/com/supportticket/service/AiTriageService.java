@@ -135,7 +135,7 @@ public class AiTriageService {
     private TicketPriority detectPriority(String text, TicketCategory category) {
         if (text.matches(".*(urgent|critical|emergency|down|outage|data loss|security|breach|cannot access|system.*down).*"))
             return TicketPriority.CRITICAL;
-        if (text.matches(".*(high|important|asap|as soon as|not working|broken|major|significant).*"))
+        if (text.matches(".*(high|login|login issue|password issue|important|asap|as soon as|not working|broken|major|significant).*"))
             return TicketPriority.HIGH;
         if (category == TicketCategory.BILLING || category == TicketCategory.ACCOUNT_ACCESS)
             return TicketPriority.HIGH;

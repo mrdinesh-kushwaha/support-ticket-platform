@@ -2,7 +2,10 @@
 
 # 🎫 SupportDesk — AI-Powered Support Ticket Platform
 
-**A production-grade, full-stack support ticket system with real-time AI triage, WebSocket notifications, and immutable audit trail.**
+SupportDesk is an AI-powered support ticket management platform that helps businesses efficiently manage, track, prioritize, and resolve customer support requests from a centralized system.
+
+## Why did I create this project?
+I created this project to solve the challenges of manual customer support processes such as lost requests, delayed responses, lack of prioritization, and poor communication by providing AI-powered ticket triage, real-time notifications, and structured support workflows.
 
 [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-2563EB?style=for-the-badge)](https://smart-support-ticket-platform.onrender.com)
 [![Backend](https://img.shields.io/badge/Backend-Spring_Boot_3.2-6DB33F?style=for-the-badge&logo=spring)](https://spring.io/projects/spring-boot)
@@ -16,7 +19,7 @@
 
 ## 🌐 Live Demo
 
-> **Try it now → [https://support-ticket-frontend-1n7g.onrender.com/](https://smart-support-ticket-platform.onrender.com)**
+> **Try it now → [https://support-ticket-frontend-1n7g.onrender.com/](https://support-ticket-frontend-1n7g.onrender.com/)**
 
 Use the pre-seeded accounts below — no signup needed:
 
@@ -28,6 +31,53 @@ Use the pre-seeded accounts below — no signup needed:
 | 👤 **Customer 2** | `customer2@example.com` | `password123` |
 
 > ⚠️ Hosted on Render free tier — first load may take ~30s to wake up.
+
+---
+
+## Preview
+
+<div align="center">
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="assets/register-customer.png" width="380" alt="FocusTick floating clock on dark page" />
+      <br/>
+      <sub><b>📃Register Customer Page</b></sub>
+    </td>
+    <td align="center">
+      <img src="assets/login-page.png" width="380" alt="FocusTick floating clock on youtube page" />
+      <br/>
+      <sub><b>📃Login Customer and Agent Page</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="assets/customer-dashboard.png" width="380" alt="FocusTick widget dragged to corner" />
+      <br/>
+      <sub><b>📚 Customer Dashboard</b></sub>
+    </td>
+    <td align="center">
+      <img src="assets/customer-create-ticket.png" width="380" alt="Watching youtube video" />
+      <br/>
+      <sub><b>📺 Customer Create Ticket</b></sub>
+    </td>
+  </tr>
+    <tr>
+    <td align="center">
+      <img src="assets/agent-dashboard.png" width="380" alt="FocusTick widget dragged to corner" />
+      <br/>
+      <sub><b>📚 Agent Dashboard</b></sub>
+    </td>
+    <td align="center">
+      <img src="assets/assigned-ticket.png" width="380" alt="Watching youtube video" />
+      <br/>
+      <sub><b>📃 Agent Assigned Ticket</b></sub>
+    </td>
+  </tr>
+</table>
+
+</div>
 
 ---
 
@@ -311,10 +361,19 @@ support-ticket-platform/
 
 ---
 
+## Author
+
+**Dinesh Kushwaha**  
+Full-Stack Developer — building productivity tools, SaaS platforms.
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mrdinesh-kushwaha/)
+
+---
+
 <div align="center">
 
-**Built with Java 21 · Spring Boot 3.2 · React 18 · Anthropic Claude**
+*Built with focus, for focused people.*
 
-⭐ Star this repo if you found it useful!
+⭐ If this extension helps you stay on track, consider giving it a star!
 
 </div>

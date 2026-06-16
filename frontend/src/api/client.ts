@@ -5,7 +5,7 @@ const API_BASE = import.meta.env.VITE_API_URL || '/api';
 export const apiClient = axios.create({
   baseURL: API_BASE,
   headers: { 'Content-Type': 'application/json' },
-  timeout: 15000,
+  timeout: 60000,
 });
 
 // Attach JWT token to every request
