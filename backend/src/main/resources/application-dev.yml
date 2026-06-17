@@ -24,8 +24,7 @@ logging:
 app:
   init:
     sample-data: true
-
-app:
   jwt:
     secret: ${JWT_SECRET:MyVeryLongSecretKeyForJWTThatIsAtLeast256BitsLong_djbsdjb261!}
     expiration: 86400000
+
