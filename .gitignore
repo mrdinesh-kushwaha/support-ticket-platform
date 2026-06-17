@@ -35,3 +35,19 @@ Thumbs.db
 
 # Docker volumes
 postgres_data/
+
+# Secrets and configuration files
+.env.example
+.env.production
+.env.local
+application-secret.yml
+real passwords/API keys
+
+# Secrets / env files
+.env
+.env.*
+!.env.example
+
+# Local secret Spring config
+application-secret.yml
+application-local.yml
