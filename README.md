@@ -17,9 +17,7 @@ I created this project to solve the challenges of manual customer support proces
 
 ---
 
-## 🌐 Live Demo
-
-> **Try it now → [https://support-ticket-frontend-1n7g.onrender.com/](https://support-ticket-frontend-1n7g.onrender.com/)**
+## Demo Credentials
 
 Use the pre-seeded accounts below — no signup needed:
 
