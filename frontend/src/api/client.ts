@@ -1,6 +1,10 @@
 import axios, { AxiosError } from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = import.meta.env.VITE_API_URL;
+
+if (!API_BASE) {
+  throw new Error('VITE_API_URL is missing in Vercel Environment Variables');
+}
 
 export const apiClient = axios.create({
   baseURL: API_BASE,
