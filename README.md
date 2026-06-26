@@ -7,7 +7,7 @@ SupportDesk is an AI-powered support ticket management platform that helps busin
 ## Why did I create this project?
 I created this project to solve the challenges of manual customer support processes such as lost requests, delayed responses, lack of prioritization, and poor communication by providing AI-powered ticket triage, real-time notifications, and structured support workflows.
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-2563EB?style=for-the-badge)](https://smart-support-ticket-platform.onrender.com)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_App-2563EB?style=for-the-badge)](https://support-ticket-platform-ten.vercel.app)
 [![Backend](https://img.shields.io/badge/Backend-Spring_Boot_3.2-6DB33F?style=for-the-badge&logo=spring)](https://spring.io/projects/spring-boot)
 [![Frontend](https://img.shields.io/badge/Frontend-React_18_+_TypeScript-3178C6?style=for-the-badge&logo=react)](https://react.dev/)
 [![AI](https://img.shields.io/badge/AI-Anthropic_Claude-D97706?style=for-the-badge)](https://www.anthropic.com/)
