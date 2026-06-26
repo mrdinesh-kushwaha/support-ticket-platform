@@ -35,7 +35,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-        if (path.startsWith("/ws-notifications")) {
+        // Skip public endpoints
+        if (
+                path.equals("/api/health") ||
+                path.startsWith("/api/auth/") ||
+                path.startsWith("/actuator/") ||
+                path.startsWith("/ws-notifications")
+        ) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -57,8 +63,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 if (jwtService.isTokenValid(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(
-                                    userDetails, null, userDetails.getAuthorities());
-                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                                    userDetails,
+                                    null,
+                                    userDetails.getAuthorities()
+                            );
+
+                    authToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
+
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
