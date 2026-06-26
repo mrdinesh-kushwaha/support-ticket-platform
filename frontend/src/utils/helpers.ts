@@ -59,18 +59,9 @@ export const auditActionLabels: Record<AuditAction, string> = {
 
 export const getErrorMessage = (error: unknown): string => {
   if (!error) return 'An unknown error occurred';
-
-  const err = error as any;
-  const data = err?.response?.data;
-
-  const msg =
-    data?.message ||
-    data?.error ||
-    err?.message ||
-    'Something went wrong';
-
-  if (typeof msg === 'string') return msg;
-  if (typeof msg === 'object') return msg.message || msg.code || JSON.stringify(msg);
-
-  return String(msg);
+  const err = error as { response?: { data?: { message?: string; error?: string } }; message?: string };
+  return err.response?.data?.message
+    || err.response?.data?.error
+    || err.message
+    || 'Something went wrong';
 };
