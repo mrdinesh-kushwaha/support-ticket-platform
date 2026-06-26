@@ -60,15 +60,23 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail().toLowerCase(), request.getPassword()));
+        String email = request.getEmail().toLowerCase().trim();
 
-        User user = userRepository.findByEmail(request.getEmail().toLowerCase())
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, request.getPassword()));
+
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+        UserDetails userDetails = org.springframework.security.core.userdetails.User
+                .withUsername(user.getEmail())
+                .password(user.getPassword())
+                .authorities("ROLE_" + user.getRole().name())
+                .disabled(!user.isEnabled())
+                .build();
+
         String token = jwtService.generateToken(userDetails);
 
         log.info("User logged in: {}", user.getEmail());
