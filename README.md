@@ -262,7 +262,7 @@ Swagger UI: **`http://localhost:8080/swagger-ui.html`**
 
 ## ☁️ Production Deployment
 
-### Render / Railway / Fly.io (Backend)
+### Render (Backend)
 
 1. Connect GitHub repo
 2. **Build:** `cd backend && mvn clean package -DskipTests`
@@ -278,14 +278,14 @@ ANTHROPIC_API_KEY=sk-ant-...
 CORS_ORIGINS=https://your-frontend.vercel.app
 ```
 
-### Vercel / Netlify (Frontend)
+### Vercel (Frontend)
 
 - Root: `frontend/`
 - Build: `npm run build`
 - Output: `dist`
 - Env: `VITE_API_URL=https://your-backend.onrender.com/api`
 
-### PostgreSQL (Production)
+### PostgreSQL via Neon (Production)
 ```sql
 CREATE DATABASE supportticketdb;
 CREATE USER supportuser WITH PASSWORD 'your-password';
